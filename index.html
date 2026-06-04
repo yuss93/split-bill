@@ -24,20 +24,22 @@
     </div>
     <div>
         <p>Enter the bill amount</p>
-        <input id="bill" type="number" placeholder="enter the bill amount">
+        <input id="bill-input" type="number" placeholder="enter the bill amount">
         <p>Enter the number of people</p>
-        <input id="people" type="number" placeholder="number of people">
+        <input id="people-input" type="number" placeholder="number of people">
     </div>
     <div>
-        <button id="result">Calculate</button>
-        <p id="total">the total bill is : </p>
-        <p id="person">each person pays: </p>
+        <p id="error"></p>
+        <button id="calculate-btn">Calculate</button>
+        <p id="total-display">the total bill is : </p>
     </div>
-    <div class="hidden">
+    <div id="custom-split" class="hidden">
         <input id="name" type="text" placeholder="enter your name">
         <input id="order-amount" type="number" placeholder="enter your order amount">
         <button id="add">add your item</button>
+        <p id="add-error"></p>
         <ul id="list"></ul>
+        <ul id="result-list"></ul>
     </div>
 
     <script src="script.js"></script>
