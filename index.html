@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>sharing is caring</title>
+</head>
+<body>
+    <h1>split the bill</h1>
+    <p>how would you like to split : Equal or Custom</p>
+    <div>
+        <button id="Equal">Equal</button>
+        <button id="Custom">Custom</button>
+        <select id="tip">
+            <option value="0">No Tip</option>
+            <option value="10">10%</option>
+            <option value="15">15%</option>
+            <option value="20">20%</option>
+            <option value="25">25%</option>
+            <option value="custom">Other</option>  
+        </select>
+        <input id="custom-tip" class="hidden" type="number" placeholder="Enter custom tip %">
+    </div>
+    <div>
+        <p>Enter the bill amount</p>
+        <input id="bill" type="number" placeholder="enter the bill amount">
+        <p>Enter the number of people</p>
+        <input id="people" type="number" placeholder="number of people">
+    </div>
+    <div>
+        <button id="result">Calculate</button>
+        <p id="total">the total bill is : </p>
+        <p id="person">each person pays: </p>
+    </div>
+    <div class="hidden">
+        <input id="name" type="text" placeholder="enter your name">
+        <input id="order-amount" type="number" placeholder="enter your order amount">
+        <button id="add">add your item</button>
+        <ul id="list"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
