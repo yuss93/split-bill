@@ -13,6 +13,30 @@ let mode = "equal";
 let peopleList = [];
 let ADDPe = document.getElementById("add");
 let AddError=document.getElementById("add-error");
+let hour = new Date().getHours();
+let greetingEL=document.getElementById("greeting");
+let UserName = document.getElementById("user-name");
+let error1 = document.getElementById("error1");
+UserName.addEventListener("blur",function(){
+    if(UserName.value.trim()==="" || !isNaN(UserName.value)){
+        return;
+    }
+    if (hour >=0 && hour<=11){
+        greetingEL.textContent="Good Morning " + UserName.value.toUpperCase();
+    }
+    else if(hour >=12 && hour<=17){
+        greetingEL.textContent = "Good Afternoon " + UserName.value.toUpperCase();
+    }
+    else{
+        greetingEL.textContent = "Good Evening " + UserName.value.toUpperCase();
+    }  
+});
+UserName.addEventListener("keydown",function(e){
+    if(e.key==="Enter"){
+        UserName.blur();
+    }
+})
+
 
 // EVENT LISTENERS
 ADDPe.addEventListener("click",function(){
@@ -33,6 +57,12 @@ ADDPe.addEventListener("click",function(){
 });
 
 Equal.addEventListener("click",function(){
+    if(UserName.value.trim()==="" || !isNaN(UserName.value)){
+        error1.textContent="name required, please enter your name!";
+        return;
+    }
+    document.getElementById("screen-1").classList.add("hidden");
+    document.getElementById("screen-2").classList.remove("hidden");
     mode="equal"
     peopleList=[];
     document.getElementById("list").innerHTML="";
@@ -40,8 +70,15 @@ Equal.addEventListener("click",function(){
 });
 
 Custom.addEventListener("click",function(){
+    if(UserName.value.trim()==="" || !isNaN(UserName.value)){
+        error1.textContent="name required, please enter your name!";
+        return;
+    }
+    document.getElementById("screen-1").classList.add("hidden");
+    document.getElementById("screen-2").classList.remove("hidden");
     mode="custom";
     CustomSplit.classList.remove("hidden")
+    document.getElementById("customize").classList.add("hidden");
 });
 
 tipSelect.addEventListener("change",function(){
