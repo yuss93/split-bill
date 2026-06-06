@@ -4,52 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>sharing is caring</title>
+    <title>Sharing is Caring 💸</title>
 </head>
 <body>
+    <!--==Screen 1: Welcome==-->
     
     <div id="screen-1" class="screen active">
-        <h1><strong>Split The Bill</strong></h1>
-        <p>please enter your name <input type="text" name="" id="user-name" placeholder="Enter your name"></p>
-        <p id="greeting"></p>
-        <p>how would you like to split the bill today : Equal or Custom</p>
-        <button id="Equal">Equal</button>
-        <button id="Custom">Custom</button>
-        <p id="error1"></p>
-    </div>
-    <div id="screen-2" class="screen hidden">
-        <div>
-            <select id="tip">
-                <option value="0">No Tip</option>
-                <option value="10">10%</option>
-                <option value="15">15%</option>
-                <option value="20">20%</option>
-                <option value="25">25%</option>
-                <option value="custom">Other</option>  
-            </select>
-            <input id="custom-tip" class="hidden" type="number" placeholder="Enter custom tip %">
-        </div>
-        <div id="customize">
-            <p>Enter the bill amount</p>
-            <input id="bill-input" type="number" placeholder="enter the bill amount">
-            <p>Enter the number of people</p>
-            <input id="people-input" type="number" placeholder="number of people">
-        </div>
-        <div>
-            <p id="error"></p>
-            <button id="calculate-btn">Calculate</button>
-            <p id="total-display">the total bill is : </p>
-        </div>
-        <div id="custom-split" class="hidden">
-            <input id="name" type="text" placeholder="enter your name">
-            <input id="order-amount" type="number" placeholder="enter your order amount">
-            <button id="add">add your item</button>
-            <p id="add-error"></p>
-            <ul id="list"></ul>
-            <ul id="result-list"></ul>
-        </div>
-    </div>
+        <div class="card">
+            <h1><strong>💸 Split The Bill</strong></h1>
+            <p class="subtitle">Fair splits, happy friends</p>
+            <div class="form-group">
+                <label for="user-name">Your name</label>
+                <input type="text" id="user-name" placeholder="Enter your name..."/>
+            </div>
+            <p id="greeting" class="greeting"></p>
+            <p class="label">How would like to split?</p>
 
+            <div id="split-buttons">
+                <button id="Equal" class="btn btn-outline">⚖ Equal Split</button>
+                <button id="Custom" class="btn btn-outline">✏ Custom Split</button>
+            </div>
+            <p id="error1" class="error"></p>
+        </div>
+    </div>
+    <!--===screen 2:calculator ==-->
+    <div id="screen-2" class="screen">
+        <div class="screen2-layout">
+            <!--LEFT: INPUT-->
+            <div class="panel left-panel">
+                <h2 id="mode-title">Equal Split</h2>
+                <div class="form-group">
+                    <label>Tip</label>
+                    <select id="tip">
+                        <option value="0">No Tip</option>
+                        <option value="10">10%</option>
+                        <option value="15">15%</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="custom">Other %</option>  
+                    </select>
+                    <input id="custom-tip" class="hidden" type="number" placeholder="Enter tip %"/>
+                </div>
+                <!--Equal Split inputs-->
+                <div id="equal-inputs">
+                    <div class="form-group">
+                        <label>Total Bill ($)</label>
+                        <input id="bill-input" type="number" placeholder="e.g. 120.00"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Number of People</label>
+                        <input id="people-input" type="number" placeholder="e.g. 4"/>
+                    </div>
+                </div>
+                <!--Custom Split inputs-->
+                <div id="custom-split" class="hidden">
+                    <div class="form-group">
+                        <label>Person's Name</label>
+                        <input id="name" type="text" placeholder="e.g. Yusuf"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Their Order Amount ($)</label>
+                        <input id="order-amount" type="number" placeholder="e.g. 35.00"/>
+                    </div>
+                    <button id="add" class="btn btn-secondary">+ Add Person</button>
+                    <p id="add-error" class="error"></p>
+                    <!--People added so far-->
+                    <ul id="list" class="people-list"></ul>
+                </div>
+                <p id="error" class="error"></p>
+                <button id="calculate-btn" class="btn btn-primary">Calculate 💰</button>
+                <button id="back-btn" class="btn btn-ghost">← Back</button>
+            </div>
+            <!--RIGHT:RESULT-->
+            <div class="panel right-panel">
+                <h2>Results</h2>
+                <div id="results-area">
+                    <p class="placeholder">Results will appear here after calculating...</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

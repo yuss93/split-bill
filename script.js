@@ -1,108 +1,101 @@
-// DOM ELEMENTS
-let Equal = document.getElementById("Equal");
-let Custom = document.getElementById("Custom");
-let CustomSplit = document.getElementById("custom-split");
-let bill = document.getElementById("bill-input");
-let people= document.getElementById("people-input");
-let TotalP = document.getElementById("total-display");
-let customTip = document.getElementById("custom-tip");
-let calculateBtn=document.getElementById("calculate-btn");
-let errorP = document.getElementById("error");
-let tipSelect = document.getElementById("tip");
-let mode = "equal";
-let peopleList = [];
-let ADDPe = document.getElementById("add");
-let AddError=document.getElementById("add-error");
-let hour = new Date().getHours();
-let greetingEL=document.getElementById("greeting");
-let UserName = document.getElementById("user-name");
-let error1 = document.getElementById("error1");
-UserName.addEventListener("blur",function(){
-    if(UserName.value.trim()==="" || !isNaN(UserName.value)){
-        return;
-    }
-    if (hour >=0 && hour<=11){
-        greetingEL.textContent="Good Morning " + UserName.value.toUpperCase();
-    }
-    else if(hour >=12 && hour<=17){
-        greetingEL.textContent = "Good Afternoon " + UserName.value.toUpperCase();
-    }
-    else{
-        greetingEL.textContent = "Good Evening " + UserName.value.toUpperCase();
-    }  
-});
-UserName.addEventListener("keydown",function(e){
+// ---DOM ELEMENTS---
+const userName = document.getElementById("user-name");
+const greetingEL=document.getElementById("greeting");
+const error1 = document.getElementById("error1");
+const equalBtn = document.getElementById("Equal");
+const customBtn = document.getElementById("Custom");
+const backBtn = document.getElementById("back-btn");
+const modeTitle = document.getElementById("mode-title");
+
+const tipSelect = document.getElementById("tip");
+const customTip = document.getElementById("custom-tip");
+const billInput = document.getElementById("bill-input");
+const peopleInput= document.getElementById("people-input");
+const equalInputs = document.getElementById("equal-inputs");
+
+const customSplit = document.getElementById("custom-split");
+const nameInput = document.getElementById("name");
+const orderInput = document.getElementById("order-amount");
+const addBtn = document.getElementById("add");
+const AddError=document.getElementById("add-error");
+const peopleList = document.getElementById("list");
+
+const calculateBtn=document.getElementById("calculate-btn");
+const errorP = document.getElementById("error");
+const resultsArea = document.getElementById("results-area");
+
+// --STATE---
+let mode = 'equal';
+let people = [];
+const hour = new Date().getHours();
+
+// Greeting based on time
+function updateGreeting(){
+    const name = userName.value.trim();
+    if (name ==='' || !isNaN(name)) return;
+    const timeGreeting = 
+    hour < 12 ? 'Good Morning':
+    hour < 18 ? 'Good Afternoon':
+                'Good Evening';
+    greetingEL.textContent = `${timeGreeting}, ${name.toUpperCase()}!👋`;
+}
+userName.addEventListener('blur',updateGreeting);
+userName.addEventListener("keydown",function(e){
     if(e.key==="Enter"){
-        UserName.blur();
+        userName.blur();
     }
-})
-
-
-// EVENT LISTENERS
-ADDPe.addEventListener("click",function(){
-    let presonName =document.getElementById("name").value;
-    let personAmount = parseFloat(document.getElementById("order-amount").value);
-    if (presonName.trim()==="" || personAmount<0|| isNaN(personAmount) ||!isNaN(presonName)){
-        AddError.textContent="please enter a valid name and amount";
-        return;
-    }
-    AddError.textContent="";
-    peopleList.push({name: presonName,amount:personAmount});
-    document.getElementById("name").value="";
-    document.getElementById("order-amount").value="";
-    let li = document.createElement("li");
-    li.textContent=presonName+" - $" + personAmount.toFixed(2);
-    document.getElementById("list").appendChild(li);
-
 });
 
-Equal.addEventListener("click",function(){
-    if(UserName.value.trim()==="" || !isNaN(UserName.value)){
-        error1.textContent="name required, please enter your name!";
+//===SCREEN SWITCHING====
+function goToScreen2(){
+    const name = userName.value.trim();
+    // validate name
+    if(name===''||!isNaN(name)){
+        error1.textContent = "please enter a valid name first";
         return;
     }
-    document.getElementById("screen-1").classList.add("hidden");
-    document.getElementById("screen-2").classList.remove("hidden");
-    mode="equal"
-    peopleList=[];
-    document.getElementById("list").innerHTML="";
-    CustomSplit.classList.add("hidden");
+    error1.textContent='';
+
+    //Switch Screens
+    document.getElementById('screen-1').classList.remove('active');
+    document.getElementById('screen-2').classList.add('active');
+    //Rest State
+    people=[];
+    peopleList.innerHTML='';
+    resultsArea.innerHTML = '<p class="placeholder">Results will appear here after calculating...</p>';
+    errorP.textContent='';
+}
+equalBtn.addEventListener('click',()=>{
+    mode = 'equal';
+    modeTitle.textContent = '⚖ Equal Split';
+    equalInputs.classList.remove('hidden');
+    customSplit.classList.add('hidden');
+    goToScreen2();
+});
+customBtn.addEventListener('click',()=>{
+    mode = 'custom';
+    modeTitle.textContent ='✏ Custom Split';
+    equalInputs.classList.add('hidden');
+    customSplit.classList.remove('hidden');
+    goToScreen2();
+});
+backBtn.addEventListener('click',()=>{
+    document.getElementById('screen-2').classList.remove('active');
+    document.getElementById('screen-1').classList.add('active');
 });
 
-Custom.addEventListener("click",function(){
-    if(UserName.value.trim()==="" || !isNaN(UserName.value)){
-        error1.textContent="name required, please enter your name!";
-        return;
-    }
-    document.getElementById("screen-1").classList.add("hidden");
-    document.getElementById("screen-2").classList.remove("hidden");
-    mode="custom";
-    CustomSplit.classList.remove("hidden")
-    document.getElementById("customize").classList.add("hidden");
-});
-
+//--TIP SELECTOR---
+//show/hide custom tip amount
 tipSelect.addEventListener("change",function(){
-
     if (tipSelect.value==="custom"){
         customTip.classList.remove("hidden");
+        customTip.focus();
     }
     else{
         customTip.classList.add("hidden");
-
     }
 });
-
-// CALCULATE
-
-calculateBtn.addEventListener("click",function(){
-    if (mode==="equal"){
-        calculateEqual();
-    }
-    else{
-        calculateCustom();
-    }
-});
-
+// --- GET TIP VALUE ---
 function getTip(){
     let tip;
     if (tipSelect.value=== "custom"){
@@ -117,45 +110,121 @@ function getTip(){
     }
     return tip;
 }
-function calculateEqual(){
-    let billAmount = parseFloat(bill.value);
-    let numPeople = parseInt(people.value);
-    if (billAmount<=0 || numPeople<=0 || isNaN(billAmount)|| isNaN(numPeople)){
-        TotalP.textContent="";
-        errorP.textContent="you cant input negative number! or zero";
+// ==== ADD PERSON (CUSTOM SPLIT) ===
+addBtn.addEventListener('click', ()=>{
+    const name = nameInput.value.trim();
+    const amount = parseFloat(orderInput.value);
+    // validate
+    if(name ==='' || !isNaN(name)){
+        AddError.textContent = 'Please enter a valid name (letters only).';
         return;
     }
-    errorP.textContent="";
-    let share = billAmount/numPeople;
-    let tip = getTip();   
-    if (tip>0){
-        share = share + share*tip;
+    if(isNaN(amount) || amount<0){
+        AddError.textContent = 'Please enter a valid amount ( 0 or more).';
+        return;
     }
-    TotalP.textContent="each person will have to pay:$"+ share.toFixed(2);
+    AddError.textContent='';
+    // ADD to state
+    people.push({name,amount});
+    // display the list
+    const li = document.createElement('li');
+    li.textContent= `${name} - $${amount.toFixed(2)}`;
+    peopleList.appendChild(li);
+    // Clear inputs
+    nameInput.value='';
+    orderInput.value='';
+    nameInput.focus();
+});
 
+// CALCULATE
+
+calculateBtn.addEventListener("click",function(){
+    if (mode==="equal"){
+        calculateEqual();
+    }
+    else{
+        calculateCustom();
+    }
+});
+
+// === Equal split - Total bill / number of people
+function calculateEqual(){
+    const bill = parseFloat(billInput.value);
+    const numPeople = parseInt(peopleInput.value);
+    // validate
+    if (bill<=0 || isNaN(bill)){
+        errorP.textContent="Please enter a valid bill amount";
+        return;
+    }
+    if(isNaN(numPeople)|| numPeople<=0 ){
+        errorP.textContent="Please enter a valid number of people";
+        return;
+    }
+    errorP.textContent='';
+    const tip = getTip(); 
+    const total = bill + bill*tip;
+    const share = total/numPeople;
+    // Display results
+    resultsArea.innerHTML='';
+
+    const totalEl = document.createElement('div');
+    totalEl.className='result-total';
+    totalEl.textContent=`Total (with tip): $${total.toFixed(2)}`;
+    resultsArea.appendChild(totalEl);
+
+    const header = document.createElement('div');
+    header.className='result-header';
+    header.textContent=`Each of the ${numPeople} people pays: `;
+    resultsArea.appendChild(header);
+
+    const item = document.createElement('div');
+    item.className = 'result-item';
+    item.innerHTML = `<span class="result-name">Per Person</span><span class="result-amount">$${share.toFixed(2)}</span>`;
+    resultsArea.appendChild(item);
+
+    if (tip>0){
+        const tipNote = document.createElement('p');
+        tipNote.style.cssText = 'font-size:.8rem;color:var(--text-dim);margin-top:.5rem;text-align:center;';
+        tipNote.textContent=`Include ${(tip*100).toFixed(0)}% tip`;
+        resultsArea.appendChild(tipNote);
+    }
 }
+// == custom split - each person pays their own amount + TIP
 function calculateCustom(){
-    document.getElementById("result-list").innerHTML = "";
-    if (peopleList.length===0){
+    if (people.length===0){
         errorP.textContent = "Please add at least one person!";
         return;
     }
     errorP.textContent="";
-    let tip = getTip();
-    let ul = document.getElementById("result-list");
-    let totalAmount = peopleList.reduce((sum,p)=>sum + p.amount,0);
-    TotalP.textContent = "Total bill: $" + totalAmount.toFixed(2);
-    let header = document.createElement("strong");
-    header.textContent = "Each person pays: ";
-    ul.appendChild(header); 
-    for (let i=0;i<peopleList.length;i++){
-        let person = peopleList[i];
-        let amount = person.amount;
-        if (tip>0){
-            amount = amount + amount*tip;
-        }
-        let li = document.createElement("li");
-        li.textContent = person.name + " pays $" + amount.toFixed(2);
-        ul.appendChild(li);
+    const tip = getTip();
+    const totalAmount = people.reduce((sum,p)=>sum + p.amount,0);
+    const totalWithTip = totalAmount + totalAmount*tip;
+    // Display result
+    resultsArea.innerHTML = '';
+    
+    const totalEl =document.createElement('div');
+    totalEl.className = 'result-total';
+    totalEl.textContent = `Total Bill: $${totalWithTip.toFixed(2)}`;
+    resultsArea.appendChild(totalEl);
+
+    const header = document.createElement('div');
+    header.className = 'result-header';
+    header.textContent = 'Each person pays:';
+    resultsArea.appendChild(header);
+    people.forEach(person => {
+    const amount = person.amount + person.amount * tip;
+    const item   = document.createElement('div');
+    item.className = 'result-item';
+    item.innerHTML = `
+      <span class="result-name">${person.name}</span>
+      <span class="result-amount">$${amount.toFixed(2)}</span>
+    `;
+    resultsArea.appendChild(item);
+    });
+  if (tip > 0) {
+    const tipNote = document.createElement('p');
+    tipNote.style.cssText = 'font-size:.8rem;color:var(--text-dim);margin-top:.5rem;text-align:center;';
+    tipNote.textContent = `Includes ${(tip * 100).toFixed(0)}% tip on each order`;
+    resultsArea.appendChild(tipNote);
     }
 }
